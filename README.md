@@ -1,4 +1,4 @@
-#CMPILER Finals - LL1 Parser
+# CMPILER Finals - LL1 Parser
 A simple LL1 parser for Regular Expressions for the partial fulfillment of CMPILER. Created using Java.
 
 ## How to run
