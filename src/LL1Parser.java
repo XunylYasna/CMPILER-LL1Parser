@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class LL1Parser extends JDialog {
     private JPanel contentPane;
@@ -8,6 +9,7 @@ public class LL1Parser extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JLabel resultLabel;
+    private JButton importButton;
 
     public LL1Parser() {
         setContentPane(contentPane);
@@ -43,21 +45,70 @@ public class LL1Parser extends JDialog {
                 )
         ));
 
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onImport();
+            }
+        });
+        importButton.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK, 1),
+                BorderFactory.createEmptyBorder(
+                        importButton.getBorder().getBorderInsets(importButton).top,
+                        importButton.getBorder().getBorderInsets(importButton).left,
+                        importButton.getBorder().getBorderInsets(importButton).bottom,
+                        importButton.getBorder().getBorderInsets(importButton).right
+                )
+        ));
+    }
+
+    private void onImport(){
+        FileDialog fd = new FileDialog(this, "Choose test case", FileDialog.LOAD);
+        fd.setVisible(true);
+        String filename = fd.getFile();
+        String fileLocation = fd.getDirectory() + filename;
+        if (filename == null){
+            resultLabel.setText("No file selected.");
+        }
+        else{
+            resultLabel.setText("You chose " + fileLocation + ".");
+        }
+
+        try {
+            FileReader fr = new FileReader(fileLocation);
+            BufferedReader br =new BufferedReader(fr);
+            FileWriter fileWriter = new FileWriter("output.txt");
+            String line;
+            Lexer lexer = new Lexer();
+            Parser parser = new Parser();
+            fileWriter.write("");
+            while((line=br.readLine())!=null)
+            {
+                String lexedString = lexer.lexString(line);
+                if(lexer.isError()){
+                    System.out.println(lexer.getOffending());
+                    fileWriter.append(line + " " + lexer.getOffending() + "\n");
+                }
+                else{
+                    String result = parser.parse(lexedString);
+                    fileWriter.append(line + " - " + result + "\n");
+                }
+            }
+            fileWriter.close();
+            fr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return;
     }
 
     private void onOK() {

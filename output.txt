@@ -1,0 +1,3 @@
+ab - Accepted
+aabbb* - Accepted
+hello( - Rejected. No lookahead on production rule - E with token $
