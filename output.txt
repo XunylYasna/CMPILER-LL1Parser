@@ -1,3 +1,25 @@
-ab - Accepted
-aabbb* - Accepted
-hello( - Rejected. No lookahead on production rule - E with token $
+(0U1)(0U1)* - Accepted
+1U(0U1)*U1 - Accepted
+(0U1)((0U1)(0U1))* - Accepted
+(1*011*(0U011*))* - Accepted
+(0U1)*110(0U1)*U* - Rejected. No lookahead on production rule - F with token *
+(0U1)(0U1)*+ - Rejected. No lookahead on production rule - R with token +
+(1*011*(0+011*) - Rejected. Token unmatched: $
+(0U1)U(0U1)(0U1)U(0U1)(0U1) - Accepted
+*(1U0) - Rejected. No lookahead on production rule - S with token *
+(abc1)?bc+u*??a+ - Rejected. No lookahead on production rule - R with token ?
+helloworld - Accepted
+1U(0U1)*U1U01|a Unrecognized token(s) -  |
+a|(b|c)*|c Unrecognized token(s) -  | | |
+? - Rejected. No lookahead on production rule - S with token ?
+((0U1)*1UE)(00)*00? - Accepted
+(01U001U1)*(0U00UE) - Accepted
+((aUb)U1)++ - Rejected. No lookahead on production rule - R with token +
+a*a(cUa)* - Accepted
+a - Accepted
+(this*is*wrong(U) - Rejected. No lookahead on production rule - E with token u
+(((((E)))))*((a)) - Accepted
+(((((E)))))*(a)) - Rejected. Token unmatched: )
+E U E - Accepted
+bUU - Rejected. No lookahead on production rule - F with token u
+iUwillUpassUcmpiler - Accepted

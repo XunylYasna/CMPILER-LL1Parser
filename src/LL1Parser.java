@@ -93,7 +93,7 @@ public class LL1Parser extends JDialog {
                 String lexedString = lexer.lexString(line);
                 if(lexer.isError()){
                     System.out.println(lexer.getOffending());
-                    fileWriter.append(line + " " + lexer.getOffending() + "\n");
+                    fileWriter.append(line + " Rejected: " + lexer.getOffending() + "\n");
                 }
                 else{
                     String result = parser.parse(lexedString);

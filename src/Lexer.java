@@ -24,11 +24,13 @@ public class Lexer {
     // Simple logic to create a dfa to translate all strings
     public String lexString(String input){
         State currentState = State.QSTART;
+        isError = false;
+        offending = "Unrecognized token(s) - ";
 
         StringBuilder output = new StringBuilder();
         for(int i = 0; i < input.length(); i++){
             char character = input.charAt(i);
-            if(character == '(' || character == ')' ||  character == '*' || character == '+' || character == '?'){
+            if(character == '(' || character == ')' ||  character == '*' || character == '+' || character == '?' && currentState == State.QSTART){
                 currentState = State.QSTART;
                 output.append(character);
             }
@@ -40,11 +42,11 @@ public class Lexer {
                 currentState = State.QSTART;
                 output.append('u');
             }
-            else if(character >= 'a' && character <= 'z' || character >= '0' && character <= '9'){
+            else if(character >= 'a' && character <= 'z' || character >= '0' && character <= '9' && currentState == State.QSTART){
                 currentState = State.QSTART;
                 output.append('t');
             }
-            else if(character == ' ' || character == '\t'){
+            else if(character == ' ' || character == '\t' && currentState == State.QSTART){
                 currentState = State.QSTART;
             }
             else{
